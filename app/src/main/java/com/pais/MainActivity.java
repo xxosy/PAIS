@@ -76,6 +76,9 @@ public class MainActivity extends AppCompatActivity
     public void testMethod(){
         
     }
+    public void test(){
+
+    }
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
