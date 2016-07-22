@@ -5,6 +5,8 @@ import com.pais.domain.humidity.HumidityItem;
 import com.pais.domain.humidity.HumidityList;
 import com.pais.domain.sensor.SensorItem;
 import com.pais.domain.sensor.SensorList;
+import com.pais.domain.temperature.TemperatureItem;
+import com.pais.domain.temperature.TemperatureList;
 
 import javax.inject.Inject;
 
@@ -20,7 +22,9 @@ import rx.Observable;
  * Created by SSL-D on 2016-07-21.
  */
 
-public class SensorDataAPI {
+public class SensorDataAPI implements SensorAPI.Service
+                        ,HumidityAPI.Service
+                        ,TemperatureAPI.Service{
     private Retrofit retrofit;
 
     @Inject
@@ -28,34 +32,53 @@ public class SensorDataAPI {
         this.retrofit = retrofit;
     }
 
+    @Override
     public Observable<HumidityItem> getHumidity(){
-        return retrofit.create(Api.class)
+        return retrofit.create(HumidityAPI.class)
                 .getHumidity();
     }
+    @Override
     public Observable<HumidityList> getHumidityList(){
-        return retrofit.create(Api.class)
+        return retrofit.create(HumidityAPI.class)
                 .getHumidityList();
     }
+    @Override
     public Observable<SensorItem> getSensor(String serial){
-        return retrofit.create(Api.class)
+        return retrofit.create(SensorAPI.class)
                 .getSensor(serial);
     }
+
+    @Override
+    public Observable<SensorList> updateSensorName(String serial, String name) {
+        return retrofit.create(SensorAPI.class)
+                .updateSensorName(serial,name);
+    }
+
+    @Override
+    public Observable<SensorList> deleteSensor(String serial) {
+        return retrofit.create(SensorAPI.class)
+                .deleteSensor(serial);
+    }
+
+    @Override
     public Observable<SensorList> getSensorList(){
-        return retrofit.create(Api.class)
+        return retrofit.create(SensorAPI.class)
                 .getSensorList();
     }
+
+    @Override
+    public Observable<TemperatureItem> getTemperature() {
+        return retrofit.create(TemperatureAPI.class)
+                .getTemperature();
+    }
+
+    @Override
+    public Observable<TemperatureList> getTemperatureList() {
+        return retrofit.create(TemperatureAPI.class)
+                .getTemperatureList();
+    }
+
     interface Api{
-        @GET("/humidity/list")
-        Observable<HumidityList> getHumidityList();
-        @GET("/humidity/recent")
-        Observable<HumidityItem> getHumidity();
-        @GET("/sensor/{serial}")
-        Observable<SensorItem> getSensor(@Path("serial") String serial);
-        @GET("/sensor/list")
-        Observable<SensorList> getSensorList();
-        @PUT("/sensor/{serial}/{name}")
-        Observable<SensorList> updateSensorName(@Path("serial")String serial,@Path("name") String name);
-        @DELETE("/sensor/{serial}")
-        Observable<SensorList> deleteSensor(@Path("serial")String serial);
+
     }
 }
