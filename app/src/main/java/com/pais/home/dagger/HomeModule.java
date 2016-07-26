@@ -1,5 +1,7 @@
 package com.pais.home.dagger;
 
+import com.pais.home.adapter.SensorSpinnerAdapter;
+import com.pais.home.adapter.SensorSpinnerAdapterModel;
 import com.pais.home.presenter.HomePresenter;
 import com.pais.home.presenter.HomePresenterImpl;
 import com.pais.network.dagger.NetworkModule;
@@ -13,9 +15,11 @@ import dagger.Provides;
 @Module(includes = NetworkModule.class)
 public class HomeModule {
     private HomePresenter.View view;
+    private SensorSpinnerAdapter adapter;
 
-    public HomeModule(HomePresenter.View view){
+    public HomeModule(HomePresenter.View view, SensorSpinnerAdapter adapter){
         this.view = view;
+        this.adapter = adapter;
     }
 
     @Provides
@@ -26,4 +30,6 @@ public class HomeModule {
     HomePresenter.View provideView(){
         return view;
     }
+    @Provides
+    SensorSpinnerAdapterModel provideSensorSpinnerAdapterModel(){return adapter;}
 }

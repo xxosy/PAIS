@@ -17,14 +17,14 @@ public interface SensorAPI {
     @GET("/sensor/{serial}")
     Observable<SensorItem> getSensor(@Path("serial") String serial);
     @GET("/sensor/list")
-    Observable<SensorList> getSensorList();
+    Observable<SensorItem[]> getSensorList();
     @PUT("/sensor/{serial}/{name}")
     Observable<SensorList> updateSensorName(@Path("serial")String serial,@Path("name") String name);
     @DELETE("/sensor/{serial}")
     Observable<SensorList> deleteSensor(@Path("serial")String serial);
 
     interface Service{
-        Observable<SensorList> getSensorList();
+        Observable<SensorItem[]> getSensorList();
         Observable<SensorItem> getSensor(String serial);
         Observable<SensorList> updateSensorName(String serial, String name);
         Observable<SensorList> deleteSensor(String serial);

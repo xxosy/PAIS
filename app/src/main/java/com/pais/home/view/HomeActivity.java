@@ -1,5 +1,6 @@
 package com.pais.home.view;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -9,18 +10,28 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.pais.R;
+import com.pais.domain.sensor.SensorItem;
+import com.pais.home.adapter.SensorSpinnerAdapter;
 import com.pais.home.dagger.HomeModule;
 import com.pais.home.presenter.HomePresenter;
 import com.pais.home.dagger.DaggerHomeComponent;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
+
+import butterknife.Bind;
 
 
 public class HomeActivity extends AppCompatActivity
@@ -29,31 +40,25 @@ public class HomeActivity extends AppCompatActivity
     @Inject
     HomePresenter homePresenter;
 
+    Spinner spinnerSensor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SensorSpinnerAdapter sensorSpinnerAdapter = new SensorSpinnerAdapter();
+
         DaggerHomeComponent.builder()
-                .homeModule(new HomeModule(this))
+                .homeModule(new HomeModule(this,sensorSpinnerAdapter))
                 .build()
                 .inject(this);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
         setCustomActionbar();
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        homePresenter.initHome();
     }
     private void setCustomActionbar(){
         ActionBar actionBar = getSupportActionBar();
@@ -63,6 +68,7 @@ public class HomeActivity extends AppCompatActivity
         actionBar.setDisplayShowTitleEnabled(false);
 
         View mCustomView = LayoutInflater.from(this).inflate(R.layout.actionbar_main, null);
+        spinnerSensor = (Spinner) mCustomView.findViewById(R.id.spinner_sensor);
         actionBar.setCustomView(mCustomView);
 
         Toolbar parent = (Toolbar) mCustomView.getParent();
@@ -134,10 +140,12 @@ public class HomeActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
     @Override
-    public void refreshSensorSpinner() {
-
+    public void refreshSensorSpinner(ArrayList<SensorItem> items) {
+        ArrayList<String> array = new ArrayList<>();
+        for(SensorItem item : items)
+            array.add(item.getName());
+        spinnerSensor.setAdapter(new ArrayAdapter<String>(this,R.layout.spinner_item,array));
     }
 
     @Override
@@ -151,7 +159,7 @@ public class HomeActivity extends AppCompatActivity
     }
 
     @Override
-    public void refreshSelectedSensorData() {
+    public void refreshMainSensorData() {
 
     }
 

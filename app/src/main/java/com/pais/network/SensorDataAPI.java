@@ -61,7 +61,7 @@ public class SensorDataAPI implements SensorAPI.Service
     }
 
     @Override
-    public Observable<SensorList> getSensorList(){
+    public Observable<SensorItem[]> getSensorList(){
         return retrofit.create(SensorAPI.class)
                 .getSensorList();
     }
@@ -76,9 +76,5 @@ public class SensorDataAPI implements SensorAPI.Service
     public Observable<TemperatureList> getTemperatureList() {
         return retrofit.create(TemperatureAPI.class)
                 .getTemperatureList();
-    }
-
-    interface Api{
-
     }
 }
