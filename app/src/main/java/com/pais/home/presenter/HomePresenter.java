@@ -16,6 +16,7 @@ public interface HomePresenter {
     void choosableSensorDataTouched();
     interface View{
         void refreshSensorSpinner(ArrayList<SensorItem> items);
+        void refreshChart(float[] graph);
         void refreshDate(String date);
         void refreshUpdateTime(String time);
         void refreshMainSensorData();

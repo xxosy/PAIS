@@ -26,6 +26,8 @@ public class HomePresenterImpl implements HomePresenter {
     private SensorSpinnerAdapterModel sensorSpinnerAdapterModel;
     private Subscription initSubscription;
     private PublishSubject subject;
+    private int currentValue;
+    private int currentSensor;
 
     @Inject
     public HomePresenterImpl(View view, SensorDataAPI sensorDataAPI, SensorSpinnerAdapterModel sensorSpinnerAdapterModel){
@@ -37,7 +39,6 @@ public class HomePresenterImpl implements HomePresenter {
 
     @Override
     public void initHome() {
-
         sensorDataAPI.getSensorList()
                 .subscribeOn(Schedulers.io())
                 .flatMap(result-> Observable.from(result))
