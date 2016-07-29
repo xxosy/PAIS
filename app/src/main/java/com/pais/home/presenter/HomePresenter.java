@@ -1,6 +1,8 @@
 package com.pais.home.presenter;
 
+import com.pais.domain.Value;
 import com.pais.domain.sensor.SensorItem;
+import com.pais.domain.temperature.TemperatureList;
 
 import java.util.ArrayList;
 
@@ -10,19 +12,19 @@ import java.util.ArrayList;
 
 public interface HomePresenter {
     void initHome();
-    void spinnerItemChanged();
+    void spinnerItemChanged(String serial);
     void sensorAddButtonTouched();
     void settingTimeTouched();
     void choosableSensorDataTouched();
     interface View{
         void refreshSensorSpinner(ArrayList<SensorItem> items);
-        void refreshChart(float[] graph);
+        void refreshChart(TemperatureList items);
         void refreshDate(String date);
         void refreshUpdateTime(String time);
-        void refreshMainSensorData();
-        void refreshSubSensorData();
+        void refreshMainSensorData(Value mainData);
+        void refreshSubSensorData(Value subData);
         void refreshSensorDataAtSettingTime();
-        void refreshChoosableSensorData();
+        void refreshChoosableSensorData(String temp, String humid, String co2, String light,String ph, String ec);
         void refreshSelectedSensorGraph();
         void refresh();
     }

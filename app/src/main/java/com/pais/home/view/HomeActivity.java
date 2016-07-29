@@ -14,8 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.handstudio.android.hzgrapherlib.animation.GraphAnimation;
 import com.handstudio.android.hzgrapherlib.graphview.CurveGraphView;
@@ -23,38 +26,67 @@ import com.handstudio.android.hzgrapherlib.vo.GraphNameBox;
 import com.handstudio.android.hzgrapherlib.vo.curvegraph.CurveGraph;
 import com.handstudio.android.hzgrapherlib.vo.curvegraph.CurveGraphVO;
 import com.pais.R;
+import com.pais.domain.Value;
 import com.pais.domain.sensor.SensorItem;
+import com.pais.domain.temperature.TemperatureItem;
+import com.pais.domain.temperature.TemperatureList;
 import com.pais.home.adapter.SensorSpinnerAdapter;
 import com.pais.home.dagger.HomeModule;
 import com.pais.home.presenter.HomePresenter;
 import com.pais.home.dagger.DaggerHomeComponent;
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
-
+enum ValueType{
+    temperature, humidity, co2,light,ph,ec
+}
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         HomePresenter.View {
+    //state
+    private ValueType mainValueType = ValueType.temperature;
+    private ValueType subValueType = ValueType.humidity;
+    private String serial;
 
     @Inject
     HomePresenter homePresenter;
 
     Spinner spinnerSensor;
 
-    @Bind(R.id.graphview)
-    private ViewGroup mChart;
+    View includedView;
+
+    ViewGroup mChart;
+    TextView tvDate;
+    TextView tvSub;
+    TextView tvMain;
+    TextView tvChoosable1;
+    TextView tvChoosable2;
+    TextView tvChoosable3;
+    TextView tvChoosable4;
+    TextView tvLabel1;
+    TextView tvLabel2;
+    TextView tvLabel3;
+    TextView tvLabel4;
+    TextView tvUpdateTime;
+    LinearLayout btnChoosable1;
+    LinearLayout btnChoosable2;
+    LinearLayout btnChoosable3;
+    LinearLayout btnChoosable4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         SensorSpinnerAdapter sensorSpinnerAdapter = new SensorSpinnerAdapter();
-
+        initViews();
         DaggerHomeComponent.builder()
                 .homeModule(new HomeModule(this,sensorSpinnerAdapter))
                 .build()
@@ -66,6 +98,70 @@ public class HomeActivity extends AppCompatActivity
 
         homePresenter.initHome();
     }
+    private void initViews(){
+        includedView = (View) findViewById(R.id.content_main);
+        mChart = (ViewGroup) includedView.findViewById(R.id.graphview);
+        tvDate =(TextView) includedView.findViewById(R.id.txt_date);
+        tvSub = (TextView) includedView.findViewById(R.id.tv_sub_data);
+        tvMain = (TextView) includedView.findViewById(R.id.tv_main_data);
+        tvChoosable1 = (TextView) includedView.findViewById(R.id.tv_choosable_data_1);
+        tvChoosable2 = (TextView) includedView.findViewById(R.id.tv_choosable_data_2);
+        tvChoosable3 = (TextView) includedView.findViewById(R.id.tv_choosable_data_3);
+        tvChoosable4 = (TextView) includedView.findViewById(R.id.tv_choosable_data_4);
+        tvLabel1 = (TextView) includedView.findViewById(R.id.tv_choosable_label1);
+        tvLabel2 = (TextView) includedView.findViewById(R.id.tv_choosable_label2);
+        tvLabel3 = (TextView) includedView.findViewById(R.id.tv_choosable_label3);
+        tvLabel4 = (TextView) includedView.findViewById(R.id.tv_choosable_label4);
+        tvUpdateTime = (TextView) includedView.findViewById(R.id.update_time);
+
+        btnChoosable1 = (LinearLayout) includedView.findViewById(R.id.btn_choosable_1);
+        btnChoosable2 = (LinearLayout) includedView.findViewById(R.id.btn_choosable_2);
+        btnChoosable3 = (LinearLayout) includedView.findViewById(R.id.btn_choosable_3);
+        btnChoosable4 = (LinearLayout) includedView.findViewById(R.id.btn_choosable_4);
+
+        View.OnClickListener choosableClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(v.getId()==R.id.btn_choosable_1){
+                    setMainValueType(tvLabel1);
+                }else if(v.getId()==R.id.btn_choosable_2){
+                    setMainValueType(tvLabel2);
+                }else if(v.getId()==R.id.btn_choosable_3){
+                    setMainValueType(tvLabel3);
+                }else if(v.getId()==R.id.btn_choosable_4){
+                    setMainValueType(tvLabel4);
+                }
+                homePresenter.initHome();
+            }
+            private void setMainValueType(TextView tv){
+                if(tv.getText().equals("CO2")){
+                    mainValueType = ValueType.co2;
+                    subValueType = ValueType.light;
+                }else if(tv.getText().equals("광량")){
+                    mainValueType = ValueType.light;
+                    subValueType = ValueType.co2;
+                }else if(tv.getText().equals("ph")){
+                    mainValueType = ValueType.ph;
+                    subValueType = ValueType.ec;
+                }else if(tv.getText().equals("ec")){
+                    mainValueType = ValueType.ec;
+                    subValueType = ValueType.ph;
+                }else if(tv.getText().equals("온도")){
+                    mainValueType = ValueType.temperature;
+                    subValueType = ValueType.humidity;
+                }else if(tv.getText().equals("습도")){
+                    mainValueType = ValueType.humidity;
+                    subValueType = ValueType.temperature;
+                }
+            }
+        };
+        btnChoosable1.setOnClickListener(choosableClickListener);
+        btnChoosable2.setOnClickListener(choosableClickListener);
+        btnChoosable3.setOnClickListener(choosableClickListener);
+        btnChoosable4.setOnClickListener(choosableClickListener);
+
+    }
+
     private void setCustomActionbar(){
         ActionBar actionBar = getSupportActionBar();
 
@@ -91,6 +187,7 @@ public class HomeActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -152,6 +249,19 @@ public class HomeActivity extends AppCompatActivity
         for(SensorItem item : items)
             array.add(item.getName());
         spinnerSensor.setAdapter(new ArrayAdapter<String>(this,R.layout.spinner_item,array));
+        spinnerSensor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String itemSerial = items.get(position).getSerial();
+                serial = itemSerial;
+                homePresenter.spinnerItemChanged(serial);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
     private void setCurveGraph(ViewGroup viewGroup, String[] legendArr, float[] graph, String Name, int Color, int maxValue, int increment) {
         CurveGraphVO vo = makeCurveGraphAllSetting(legendArr, graph, Name, Color, maxValue, increment);
@@ -187,30 +297,76 @@ public class HomeActivity extends AppCompatActivity
     }
 
     @Override
-    public void refreshChart(float[] graph) {
-        String[] legendArr = null;
-        setCurveGraph(mChart, legendArr,graph,"temp", Color.BLACK,100,20);
+    public void refreshChart(TemperatureList items) {
+        String[] legend= new String[items.getTemperatureItems().length];
+        float[] data = new float[items.getTemperatureItems().length];
+        int i = 0;
+        float fmax = 0;
+
+        for(TemperatureItem item : items.getTemperatureItems()){
+            legend[i] = item.getUpdate_time();
+            data[i] = Float.parseFloat(item.getTemperature());
+            if(fmax<data[i])
+                fmax = data[i];
+            i++;
+        }
+        int max = (int)fmax;
+        max +=10;
+        max = max/10*10;
+        setCurveGraph(mChart, legend,data,"온도", Color.BLUE,max,10);
     }
 
     @Override
     public void refreshDate(String date) {
+        Date today = new Date();
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        tvDate.setText(sdf.format(today));
     }
 
     @Override
     public void refreshUpdateTime(String time) {
-
+        tvUpdateTime.setText(time);
     }
 
     @Override
-    public void refreshMainSensorData() {
-
+    public void refreshMainSensorData(Value mainData) {
+        String main = mainData.getTemperature();
+        if(mainValueType.equals(ValueType.temperature)){
+            main = mainData.getTemperature();
+        }else if(mainValueType.equals(ValueType.humidity)){
+            main = mainData.getHumidity();
+        }else if(mainValueType.equals(ValueType.co2)){
+            main = mainData.getCo2();
+        }else if(mainValueType.equals(ValueType.light)){
+            main = mainData.getLight();
+        }else if(mainValueType.equals(ValueType.ph)){
+            main = mainData.getPh();
+        }else if(mainValueType.equals(ValueType.ec)){
+            main = mainData.getEc();
+        }
+        tvMain.setText(main);
     }
 
     @Override
-    public void refreshSubSensorData() {
-
+    public void refreshSubSensorData(Value subData) {
+        String sub = subData.getTemperature();
+        if(subValueType.equals(ValueType.temperature)){
+            sub = subData.getTemperature();
+        }else if(subValueType.equals(ValueType.humidity)){
+            sub = subData.getHumidity();
+        }else if(subValueType.equals(ValueType.co2)){
+            sub = subData.getCo2();
+        }else if(subValueType.equals(ValueType.light)){
+            sub = subData.getLight();
+        }else if(subValueType.equals(ValueType.ph)){
+            sub = subData.getPh();
+        }else if(subValueType.equals(ValueType.ec)){
+            sub = subData.getEc();
+        }
+        tvSub.setText(sub);
     }
+
 
     @Override
     public void refreshSensorDataAtSettingTime() {
@@ -218,9 +374,59 @@ public class HomeActivity extends AppCompatActivity
     }
 
     @Override
-    public void refreshChoosableSensorData() {
+    public void refreshChoosableSensorData(String temp, String humid, String co2, String light,String ph, String ec) {
+        String[] label = new String[4];
+        label[0] = "CO2";
+        label[1] = "광량";
+        label[2] = "ph";
+        label[3] = "ec";
+        String[] data = new String[4];
+        data[0] = co2;
+        data[1] = light;
+        data[2] = ph;
+        data[3] = ec;
+        if(mainValueType.equals(ValueType.temperature)){
+        }else if(mainValueType.equals(ValueType.humidity)){
+        }else if(mainValueType.equals(ValueType.co2)){
+            label[0] = "온도";
+            label[1] = "습도";
+            data[0] = temp;
+            data[1] = humid;
+        }else if(mainValueType.equals(ValueType.light)){
+            label[0] = "온도";
+            label[1] = "습도";
+            data[0] = temp;
+            data[1] = humid;
+        }else if(mainValueType.equals(ValueType.ph)){
+            label[0] = "온도";
+            label[1] = "습도";
+            label[2] = "CO2";
+            label[3] = "광량";
+            data[0] = temp;
+            data[1] = humid;
+            data[2] = co2;
+            data[3] = light;
+        }else if(mainValueType.equals(ValueType.ec)){
+            label[0] = "온도";
+            label[1] = "습도";
+            label[2] = "CO2";
+            label[3] = "광량";
+            data[0] = temp;
+            data[1] = humid;
+            data[2] = co2;
+            data[3] = light;
+        }
+        tvLabel1.setText(label[0]);
+        tvLabel2.setText(label[1]);
+        tvLabel3.setText(label[2]);
+        tvLabel4.setText(label[3]);
 
+        tvChoosable1.setText(data[0]);
+        tvChoosable2.setText(data[1]);
+        tvChoosable3.setText(data[2]);
+        tvChoosable4.setText(data[3]);
     }
+
 
     @Override
     public void refreshSelectedSensorGraph() {
@@ -232,3 +438,4 @@ public class HomeActivity extends AppCompatActivity
 
     }
 }
+

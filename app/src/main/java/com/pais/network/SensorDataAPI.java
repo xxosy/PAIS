@@ -1,6 +1,7 @@
 package com.pais.network;
 
 import com.google.android.gms.common.api.Api;
+import com.pais.domain.Value;
 import com.pais.domain.humidity.HumidityItem;
 import com.pais.domain.humidity.HumidityList;
 import com.pais.domain.sensor.SensorItem;
@@ -24,7 +25,8 @@ import rx.Observable;
 
 public class SensorDataAPI implements SensorAPI.Service
                         ,HumidityAPI.Service
-                        ,TemperatureAPI.Service{
+                        ,TemperatureAPI.Service
+                        ,ValueAPI.Service{
     private Retrofit retrofit;
 
     @Inject
@@ -73,8 +75,26 @@ public class SensorDataAPI implements SensorAPI.Service
     }
 
     @Override
-    public Observable<TemperatureList> getTemperatureList() {
+    public Observable<TemperatureList> getTemperatureList(String sensor_id) {
         return retrofit.create(TemperatureAPI.class)
-                .getTemperatureList();
+                .getTemperatureList(sensor_id);
+    }
+
+    @Override
+    public Observable<Value> getValue(String serial) {
+        return retrofit.create(ValueAPI.class)
+                .getValue(serial);
+    }
+
+    @Override
+    public Observable<Value> getValue() {
+        return retrofit.create(ValueAPI.class)
+                .getValue();
+    }
+
+    @Override
+    public Observable<TemperatureList> getValueList() {
+        return retrofit.create(ValueAPI.class)
+                .getValueList();
     }
 }

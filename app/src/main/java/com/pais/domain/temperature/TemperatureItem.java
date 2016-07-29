@@ -6,8 +6,9 @@ package com.pais.domain.temperature;
 
 public class TemperatureItem {
     private int id;
-    private String value;
+    private String temperature;
     private int sensor_id;
+    private  String update_time;
 
     public int getId() {
         return id;
@@ -17,8 +18,8 @@ public class TemperatureItem {
         return sensor_id;
     }
 
-    public String getValue() {
-        return value;
+    public String getTemperature() {
+        return temperature;
     }
 
     public void setId(int id) {
@@ -29,7 +30,15 @@ public class TemperatureItem {
         this.sensor_id = sensor_id;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setTemperature(String temperature) {
+        this.temperature = temperature;
+    }
+
+    public String getUpdate_time() {
+        return update_time;
+    }
+
+    public void setUpdate_time(String update_time) {
+        this.update_time = update_time;
     }
 }

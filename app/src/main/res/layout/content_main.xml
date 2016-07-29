@@ -34,7 +34,7 @@
                 android:text="2016-07-27"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView4"
+                android:id="@+id/txt_date"
                 android:layout_weight="1"
                 android:layout_marginLeft="4dp" />
         </LinearLayout>
@@ -71,7 +71,7 @@
                 android:text="09:00"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView2"
+                android:id="@+id/update_time"
                 android:layout_weight="1"
                 android:gravity="right" />
         </LinearLayout>
@@ -105,7 +105,7 @@
                         android:text="27"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textView8"
+                        android:id="@+id/tv_main_data"
                         android:textSize="60sp"
                         android:layout_weight="1"
                         android:gravity="right"
@@ -115,7 +115,7 @@
                         android:text="°C "
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textView14"
+                        android:id="@+id/tv_unit"
                         android:layout_weight="1"
                         android:textSize="48sp"
                         android:textColor="@color/colorSub" />
@@ -204,7 +204,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     app:srcCompat="@drawable/ic_waterdrop"
-                    android:id="@+id/imageView2" />
+                    android:id="@+id/img_sub_icon" />
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -216,7 +216,7 @@
                         android:text="89"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textView13"
+                        android:id="@+id/tv_sub_data"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
                         android:layout_marginLeft="8dp"
@@ -248,13 +248,15 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:clickable="true"
+            android:id="@+id/btn_choosable_1">
 
             <TextView
                 android:text="CO2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView19"
+                android:id="@+id/tv_choosable_label1"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:textColor="@color/colorBase"
@@ -270,7 +272,7 @@
                     android:text="1000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textView15"
+                    android:id="@+id/tv_choosable_data_1"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:textSize="18dp"
@@ -283,13 +285,15 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:clickable="true"
+            android:id="@+id/btn_choosable_2">
 
             <TextView
                 android:text="light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView20"
+                android:id="@+id/tv_choosable_label2"
                 android:gravity="center_horizontal"
                 android:background="@color/colorPrimary"
                 android:textColor="@color/colorBase"
@@ -304,7 +308,7 @@
                     android:text="600"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textView16"
+                    android:id="@+id/tv_choosable_data_2"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:textSize="18dp"
@@ -317,13 +321,15 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:clickable="true"
+            android:id="@+id/btn_choosable_3">
 
             <TextView
                 android:text="ph"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView21"
+                android:id="@+id/tv_choosable_label3"
                 android:gravity="center_horizontal"
                 android:background="@color/colorPrimary"
                 android:textColor="@color/colorBase"
@@ -338,7 +344,7 @@
                     android:text="72"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textView17"
+                    android:id="@+id/tv_choosable_data_3"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:textSize="18dp"
@@ -351,13 +357,15 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:clickable="true"
+            android:id="@+id/btn_choosable_4">
 
             <TextView
                 android:text="ec"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView22"
+                android:id="@+id/tv_choosable_label4"
                 android:gravity="center_horizontal"
                 android:background="@color/colorPrimary"
                 android:textColor="@color/colorBase"
@@ -372,7 +380,7 @@
                     android:text="81"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textView18"
+                    android:id="@+id/tv_choosable_data_4"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:textSize="18dp"

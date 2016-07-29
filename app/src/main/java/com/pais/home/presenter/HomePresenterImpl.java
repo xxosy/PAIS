@@ -46,12 +46,50 @@ public class HomePresenterImpl implements HomePresenter {
                 .subscribe(result -> {
                     sensorSpinnerAdapterModel.add(result);
                     view.refreshSensorSpinner(sensorSpinnerAdapterModel.getItems());
+                    sensorDataAPI.getTemperatureList(String.valueOf(sensorSpinnerAdapterModel.getItem(0).getId()))
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(list -> {
+                                view.refreshChart(list);
+                            });
+                });
+        sensorDataAPI.getValue()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    view.refreshDate(result.getUpdate_date());
+                    view.refreshUpdateTime(result.getUpdate_time());
+                    view.refreshMainSensorData(result);
+                    view.refreshSubSensorData(result);
+                    view.refreshChoosableSensorData(result.getTemperature(),
+                            result.getHumidity(),
+                            result.getCo2(),
+                            result.getLight(),
+                            result.getPh(),
+                            result.getEc());
+                });
+
+    }
+    private void requestPageData4Serial(String serial){
+        sensorDataAPI.getValue(serial)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    view.refreshDate(result.getUpdate_date());
+                    view.refreshUpdateTime(result.getUpdate_time());
+                    view.refreshMainSensorData(result);
+                    view.refreshSubSensorData(result);
+                    view.refreshChoosableSensorData(result.getTemperature(),
+                            result.getHumidity(),
+                            result.getCo2(),
+                            result.getLight(),
+                            result.getPh(),
+                            result.getEc());
                 });
     }
-
     @Override
-    public void spinnerItemChanged() {
-
+    public void spinnerItemChanged(String serial) {
+        requestPageData4Serial(serial);
     }
 
     @Override

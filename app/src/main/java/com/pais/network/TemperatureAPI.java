@@ -6,6 +6,7 @@ import com.pais.domain.temperature.TemperatureItem;
 import com.pais.domain.temperature.TemperatureList;
 
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import rx.Observable;
 
 /**
@@ -13,13 +14,13 @@ import rx.Observable;
  */
 
 public interface TemperatureAPI {
-    @GET("/temperature/list")
-    Observable<TemperatureList> getTemperatureList();
+    @GET("/temperature/list/{sensor_id}")
+    Observable<TemperatureList> getTemperatureList(@Path("sensor_id")String sensor_id);
     @GET("/temperature/recent")
     Observable<TemperatureItem> getTemperature();
 
     interface Service{
         Observable<TemperatureItem> getTemperature();
-        Observable<TemperatureList> getTemperatureList();
+        Observable<TemperatureList> getTemperatureList(String sensor_id);
     }
 }
