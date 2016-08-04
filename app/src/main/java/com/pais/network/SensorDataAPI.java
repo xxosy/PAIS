@@ -1,9 +1,15 @@
 package com.pais.network;
 
 import com.google.android.gms.common.api.Api;
+import com.handstudio.android.hzgrapherlib.vo.Graph;
 import com.pais.domain.Value;
+import com.pais.domain.co2.Co2List;
+import com.pais.domain.ec.EcList;
+import com.pais.domain.graph.GraphList;
 import com.pais.domain.humidity.HumidityItem;
 import com.pais.domain.humidity.HumidityList;
+import com.pais.domain.light.LightList;
+import com.pais.domain.ph.PhList;
 import com.pais.domain.sensor.SensorItem;
 import com.pais.domain.sensor.SensorList;
 import com.pais.domain.temperature.TemperatureItem;
@@ -25,8 +31,8 @@ import rx.Observable;
 
 public class SensorDataAPI implements SensorAPI.Service
                         ,HumidityAPI.Service
-                        ,TemperatureAPI.Service
-                        ,ValueAPI.Service{
+                        ,ValueAPI.Service
+                        ,GraphDataAPI.Service{
     private Retrofit retrofit;
 
     @Inject
@@ -69,15 +75,45 @@ public class SensorDataAPI implements SensorAPI.Service
     }
 
     @Override
-    public Observable<TemperatureItem> getTemperature() {
-        return retrofit.create(TemperatureAPI.class)
-                .getTemperature();
+    public Observable<GraphList> getTemperatureList(String serial) {
+        return retrofit.create(GraphDataAPI.class)
+                .getTemperatureList(serial);
     }
 
     @Override
-    public Observable<TemperatureList> getTemperatureList(String sensor_id) {
-        return retrofit.create(TemperatureAPI.class)
-                .getTemperatureList(sensor_id);
+    public Observable<GraphList> getHumidityList(String serial) {
+        return retrofit.create(GraphDataAPI.class)
+                .getHumidityList(serial);
+    }
+
+    @Override
+    public Observable<GraphList> getTemperature2List(String serial) {
+        return retrofit.create(GraphDataAPI.class)
+                .getTemperature2List(serial);
+    }
+
+    @Override
+    public Observable<GraphList> getEcList(String serial) {
+        return retrofit.create(GraphDataAPI.class)
+                .getEcList(serial);
+    }
+
+    @Override
+    public Observable<GraphList> getPhList(String serial) {
+        return retrofit.create(GraphDataAPI.class)
+                .getPhList(serial);
+    }
+
+    @Override
+    public Observable<GraphList> getLightList(String serial) {
+        return retrofit.create(GraphDataAPI.class)
+                .getLightList(serial);
+    }
+
+    @Override
+    public Observable<GraphList> getCo2List(String serial) {
+        return retrofit.create(GraphDataAPI.class)
+                .getCo2List(serial);
     }
 
     @Override

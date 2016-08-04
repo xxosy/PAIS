@@ -1,6 +1,8 @@
 package com.pais.home.view;
 
 import android.app.FragmentTransaction;
+import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -24,6 +26,7 @@ import com.pais.home.adapter.SensorSpinnerAdapter;
 import com.pais.home.dagger.DaggerHomeComponent;
 import com.pais.home.dagger.HomeModule;
 import com.pais.home.presenter.HomePresenter;
+import com.pais.house.view.HouseFragment;
 import com.pais.sensormonitor.view.SensorMonitorFragment;
 
 import java.util.ArrayList;
@@ -34,7 +37,8 @@ import javax.inject.Inject;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        HomePresenter.View {
+        HomePresenter.View,
+        SensorMonitorFragment.OnFragmentInteractionListener{
 
     private String serial;
 
@@ -48,6 +52,7 @@ public class HomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         SensorSpinnerAdapter sensorSpinnerAdapter = new SensorSpinnerAdapter();
         DaggerHomeComponent.builder()
                 .homeModule(new HomeModule(this, sensorSpinnerAdapter))
@@ -59,10 +64,8 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         mFragmentTransaction = getFragmentManager().beginTransaction();
-        mFragmentTransaction.add(container, SensorMonitorFragment.newInstance("", ""));
-        mFragmentTransaction.addToBackStack(null);
+        mFragmentTransaction.add(container, HouseFragment.newInstance("", ""));
         mFragmentTransaction.commit();
-
         homePresenter.initHome();
     }
 
@@ -161,6 +164,10 @@ public class HomeActivity extends AppCompatActivity
                 String itemSerial = items.get(position).getSerial();
                 serial = itemSerial;
                 homePresenter.spinnerItemChanged(serial);
+//                mFragmentTransaction = getFragmentManager().beginTransaction();
+//                mFragmentTransaction.replace(container, SensorMonitorFragment.newInstance(serial, ""));
+////                mFragmentTransaction.addToBackStack(null);
+//                mFragmentTransaction.commit();
             }
 
             @Override
@@ -168,6 +175,11 @@ public class HomeActivity extends AppCompatActivity
 
             }
         });
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
 

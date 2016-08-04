@@ -6,8 +6,9 @@ package com.pais.domain.light;
 
 public class LightItem {
     private int id;
-    private String value;
+    private String light;
     private int sensor_id;
+    private  String update_time;
 
     public int getId() {
         return id;
@@ -17,8 +18,12 @@ public class LightItem {
         return sensor_id;
     }
 
-    public String getValue() {
-        return value;
+    public String getUpdate_time() {
+        return update_time;
+    }
+
+    public String getLight() {
+        return light;
     }
 
     public void setId(int id) {
@@ -29,7 +34,11 @@ public class LightItem {
         this.sensor_id = sensor_id;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setUpdate_time(String update_time) {
+        this.update_time = update_time;
+    }
+
+    public void setLight(String light) {
+        this.light = light;
     }
 }

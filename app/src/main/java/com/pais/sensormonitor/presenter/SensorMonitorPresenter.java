@@ -1,6 +1,7 @@
 package com.pais.sensormonitor.presenter;
 
 import com.pais.domain.Value;
+import com.pais.domain.graph.GraphList;
 import com.pais.domain.sensor.SensorItem;
 import com.pais.domain.temperature.TemperatureList;
 
@@ -11,18 +12,17 @@ import java.util.ArrayList;
  */
 
 public interface SensorMonitorPresenter {
-    void init();
+    void init(String serial);
     void settingTimeTouched();
-    void choosableSensorDataTouched();
+    void choosableSensorDataTouched(int index);
 
     interface View{
-        void refreshChart(TemperatureList items);
+        void refreshChart(GraphList items);
         void refreshDate(String date);
         void refreshUpdateTime(String time);
         void refreshMainSensorData(Value mainData);
-        void refreshSubSensorData(Value subData);
         void refreshSensorDataAtSettingTime();
-        void refreshChoosableSensorData(String temp, String humid, String co2, String light,String ph, String ec);
+        void refreshChoosableSensorData(Value data);
         void refreshSelectedSensorGraph();
         void refresh();
     }

@@ -6,8 +6,9 @@ package com.pais.domain.ec;
 
 public class EcItem {
     private int id;
-    private String value;
+    private String ec;
     private int sensor_id;
+    private  String update_time;
 
     public int getId() {
         return id;
@@ -17,8 +18,8 @@ public class EcItem {
         return sensor_id;
     }
 
-    public String getValue() {
-        return value;
+    public String getEc() {
+        return ec;
     }
 
     public void setId(int id) {
@@ -29,7 +30,15 @@ public class EcItem {
         this.sensor_id = sensor_id;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setEc(String ec) {
+        this.ec = ec;
+    }
+
+    public String getUpdate_time() {
+        return update_time;
+    }
+
+    public void setUpdate_time(String update_time) {
+        this.update_time = update_time;
     }
 }

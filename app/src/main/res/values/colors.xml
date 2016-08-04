@@ -5,4 +5,7 @@
     <color name="colorBase">#ECF0F1</color>
     <color name="colorSub">#3498DB</color>
     <color name="colorAccent">#E74C3C</color>
+
+    <drawable name="colorPrimary">#2980B9</drawable>
+    <drawable name="colorPrimaryDark">#2C3E50</drawable>
 </resources>

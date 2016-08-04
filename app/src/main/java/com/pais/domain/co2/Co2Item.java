@@ -1,12 +1,12 @@
-package com.pais.domain.humidity;
+package com.pais.domain.co2;
 
 /**
- * Created by SSL-D on 2016-07-21.
+ * Created by SSL-D on 2016-08-02.
  */
 
-public class HumidityItem {
+public class Co2Item {
     private int id;
-    private String humidity;
+    private String co2;
     private int sensor_id;
     private  String update_time;
 
@@ -18,8 +18,8 @@ public class HumidityItem {
         return sensor_id;
     }
 
-    public String getHumidity() {
-        return humidity;
+    public String getCo2() {
+        return co2;
     }
 
     public void setId(int id) {
@@ -30,8 +30,8 @@ public class HumidityItem {
         this.sensor_id = sensor_id;
     }
 
-    public void setHumidity(String humidity) {
-        this.humidity = humidity;
+    public void setCo2(String co2) {
+        this.co2 = co2;
     }
 
     public String getUpdate_time() {

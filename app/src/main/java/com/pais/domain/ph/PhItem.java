@@ -6,7 +6,7 @@ package com.pais.domain.ph;
 
 public class PhItem {
     private int id;
-    private String value;
+    private String ph;
     private int sensor_id;
 
     public int getId() {
@@ -17,8 +17,8 @@ public class PhItem {
         return sensor_id;
     }
 
-    public String getValue() {
-        return value;
+    public String getPh() {
+        return ph;
     }
 
     public void setId(int id) {
@@ -29,7 +29,7 @@ public class PhItem {
         this.sensor_id = sensor_id;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setPh(String ph) {
+        this.ph = ph;
     }
 }

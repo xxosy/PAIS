@@ -14,13 +14,13 @@ import rx.Observable;
  */
 
 public interface TemperatureAPI {
-    @GET("/temperature/list/{sensor_id}")
-    Observable<TemperatureList> getTemperatureList(@Path("sensor_id")String sensor_id);
+    @GET("/temperature/list/{serial}")
+    Observable<TemperatureList> getTemperatureList(@Path("serial")String serial);
     @GET("/temperature/recent")
     Observable<TemperatureItem> getTemperature();
 
     interface Service{
         Observable<TemperatureItem> getTemperature();
-        Observable<TemperatureList> getTemperatureList(String sensor_id);
+        Observable<TemperatureList> getTemperatureList(String serial);
     }
 }
