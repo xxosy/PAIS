@@ -13,4 +13,5 @@ public interface HouseAdapterDataModel {
     void clear();
     void add(HouseItem houseItem);
     void set(List<HouseItem> houseItems);
+    HouseItem getHouseItem(int index);
 }

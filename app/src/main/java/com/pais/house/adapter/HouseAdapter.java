@@ -2,16 +2,17 @@ package com.pais.house.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pais.R;
 import com.pais.domain.house.HouseItem;
-import com.pais.house.presenter.HousePresenter;
 import com.pais.views.OnRecyclerItemClickListener;
+import com.pais.views.OnRecyclerItemDeleteClickListener;
+import com.pais.views.OnRecyclerItemModifyClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,8 @@ public class HouseAdapter extends RecyclerView.Adapter<HouseAdapter.ViewHolder>
                                         HouseAdapterDataView{
     private Context context;
     private OnRecyclerItemClickListener onRecyclerItemClickListener;
+    private OnRecyclerItemModifyClickListener onRecyclerItemModifyClickListener;
+    private OnRecyclerItemDeleteClickListener onRecyclerItemDeleteClickListener;
     private List<HouseItem> items;
     public HouseAdapter(Context context) {
         this.context = context;
@@ -43,6 +46,16 @@ public class HouseAdapter extends RecyclerView.Adapter<HouseAdapter.ViewHolder>
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.tvHouseName.setText(items.get(position).getName());
+        holder.houseItem.setOnClickListener(v -> onRecyclerItemClickListener.onItemClick(HouseAdapter.this,position));
+        holder.houseItem.setOnLongClickListener(v -> {
+            refreshUpdateItems(holder.updateItems);
+            return true;
+        });
+        holder.btnHouseDelete.setOnClickListener(v -> {
+            onRecyclerItemDeleteClickListener.OnItemDeleteClick(HouseAdapter.this,position);
+            refreshUpdateItems(holder.updateItems);
+        });
+        holder.btnHouseModify.setOnClickListener(v -> onRecyclerItemModifyClickListener.OnItemModifyClick(HouseAdapter.this,position));
     }
 
     @Override
@@ -68,18 +81,49 @@ public class HouseAdapter extends RecyclerView.Adapter<HouseAdapter.ViewHolder>
     }
 
     @Override
+    public HouseItem getHouseItem(int index) {
+        return items.get(index);
+    }
+
+    @Override
     public void refresh() {
         notifyDataSetChanged();
     }
 
     @Override
     public void setOnRecyclerItemClickListener(OnRecyclerItemClickListener onRecyclerItemClickListener) {
+        this.onRecyclerItemClickListener = onRecyclerItemClickListener;
+    }
 
+    @Override
+    public void setOnRecyclerItemModifyClickListener(OnRecyclerItemModifyClickListener onRecyclerItemModifyClickListener) {
+        this.onRecyclerItemModifyClickListener = onRecyclerItemModifyClickListener;
+    }
+
+    @Override
+    public void setOnRecyclerItemDeleteClickListener(OnRecyclerItemDeleteClickListener onRecyclerItemDeleteClickListener) {
+        this.onRecyclerItemDeleteClickListener = onRecyclerItemDeleteClickListener;
+    }
+
+    public void refreshUpdateItems(View view) {
+        if(view.getVisibility() == View.VISIBLE){
+            view.setVisibility(View.GONE);
+        }else{
+            view.setVisibility(View.VISIBLE);
+        }
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         @Bind(R.id.tv_house_name)
         TextView tvHouseName;
+        @Bind(R.id.houseitem)
+        LinearLayout houseItem;
+        @Bind(R.id.btn_house_modify)
+        LinearLayout btnHouseModify;
+        @Bind(R.id.btn_house_delete)
+        LinearLayout btnHouseDelete;
+        @Bind(R.id.updateItems)
+        LinearLayout updateItems;
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);

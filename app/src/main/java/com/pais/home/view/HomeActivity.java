@@ -1,5 +1,6 @@
 package com.pais.home.view;
 
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
@@ -28,6 +29,7 @@ import com.pais.home.dagger.HomeModule;
 import com.pais.home.presenter.HomePresenter;
 import com.pais.house.view.HouseFragment;
 import com.pais.sensormonitor.view.SensorMonitorFragment;
+import com.pais.views.PageChange;
 
 import java.util.ArrayList;
 
@@ -38,7 +40,8 @@ import javax.inject.Inject;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         HomePresenter.View,
-        SensorMonitorFragment.OnFragmentInteractionListener{
+        SensorMonitorFragment.OnFragmentInteractionListener,
+        PageChange{
 
     private String serial;
 
@@ -63,9 +66,7 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        mFragmentTransaction = getFragmentManager().beginTransaction();
-        mFragmentTransaction.add(container, HouseFragment.newInstance("", ""));
-        mFragmentTransaction.commit();
+        pageChange(HouseFragment.newInstance("", "",this));
         homePresenter.initHome();
     }
 
@@ -180,6 +181,13 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void pageChange(Fragment fragment) {
+        mFragmentTransaction = getFragmentManager().beginTransaction();
+        mFragmentTransaction.add(container, fragment);
+        mFragmentTransaction.commit();
     }
 }
 

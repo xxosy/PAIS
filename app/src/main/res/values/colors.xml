@@ -6,6 +6,7 @@
     <color name="colorSub">#3498DB</color>
     <color name="colorAccent">#E74C3C</color>
 
+    <drawable name="colorSub">#3498DB</drawable>
     <drawable name="colorPrimary">#2980B9</drawable>
     <drawable name="colorPrimaryDark">#2C3E50</drawable>
 </resources>
